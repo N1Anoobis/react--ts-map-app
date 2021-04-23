@@ -1,36 +1,35 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import clsx from 'clsx';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import styles from './PostCard.module.scss'
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-interface Props  {
-  children: ReactNode;
+import clsx from 'clsx';
+import styles from './PostCard.module.scss';
+import Post from '../Post/Post';
+import { Task } from '../../redux/actions';
+interface Props {
   className?: string;
 }
 
-const Component:React.FC<Props> = ( { className, children }) => {
+const Component: React.FC<Props> = ({ className }) => {
+  const posts = useSelector((state) => state);
+  let items: Array<Task>;
+  const getItems = () => {
+    items = Object.values(posts);
+    console.log(items)
+    return items;
+  };
+
   return (
-  <div className={clsx(className, styles.root)}>
-    <h2>PostCard</h2>
-  {children}
-  </div>
-  )
-}
+    <div className={clsx(className, styles.root)}>
+      {getItems().map((post: Task) => (
+        <Post data={post} />
+      ))}
+    </div>
+  );
+};
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export { 
+export {
   Component as PostCard,
   // Container as PostCard ,
-  // Component as PostCardComponent  
- };
+  // Component as PostCardComponent
+};

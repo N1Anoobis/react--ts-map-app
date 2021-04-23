@@ -1,5 +1,9 @@
 @import '../../../src/styles/settings.scss';
 
-// .root {
-
-// }
+.root {
+  .btn {
+    margin: auto;
+    color: orange;
+    border: 1px solid transparent;
+  }
+}
