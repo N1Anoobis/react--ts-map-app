@@ -1,36 +1,42 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import styles from './DetailsView.module.scss'
+import styles from './DetailsView.module.scss';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-interface Props  {
-  children: ReactNode;
+interface Props {
   className?: string;
 }
 
-const Component:React.FC<Props> = ( { className, children }) => {
+const Component: React.FC<Props> = ({ className }) => {
+  const bull = <span className={styles.bullet}>•</span>;
+
   return (
-  <div className={clsx(className, styles.root)}>
-    <h2>DetailsView</h2>
-  {children}
-  </div>
-  )
+    <Card className={clsx(className, styles.root)}>
+      <CardContent>
+        <Typography className={styles.title} color="textSecondary" gutterBottom>
+          Word of the Day
+        </Typography>
+        <Typography variant="h5" component="h2">
+          be{bull}nev{bull}o{bull}lent
+        </Typography>
+        <Typography className={styles.pos} color="textSecondary">
+          adjective
+        </Typography>
+        <Typography variant="body2" component="p">
+          well meaning and kindly.
+          <br />
+          {'"a benevolent smile"'}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
+  );
 }
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export { 
-  Component as DetailsView,
-  // Container as DetailsView ,
-  // Component as DetailsViewComponent  
- };
+export { Component as DetailsView };

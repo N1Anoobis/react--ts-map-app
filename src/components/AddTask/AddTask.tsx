@@ -1,10 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import clsx from 'clsx';
-import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
-// import { Dispatch } from 'redux';
 import { addPostAction } from '../../redux/actions';
-import { PostActionsTypes } from '../../redux/actions';
 import styles from './AddTask.module.scss';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +13,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface Props {
   className?: string;
-  // children?: string;
 }
 
 interface NewNoteInputProps {
@@ -83,16 +79,5 @@ const AddTask: React.FC<Props> = ({ className }) => {
   );
 };
 
-// const mapStateToProps = (state: any) => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = (dispatch: (arg0: any) => any) => ({
-//   add: (id: number, note: string) => dispatch(uploadPost(id, note)),
-// });
-
-// const Container = connect(null, mapDispatchToProps)(Component);
-
 export default AddTask;
-// Container as AddTask,
-// Component as AddTaskComponent
+

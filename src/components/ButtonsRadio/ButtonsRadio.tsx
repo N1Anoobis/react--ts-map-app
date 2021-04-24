@@ -1,36 +1,42 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import styles from './ButtonsRadio.module.scss'
+import styles from './ButtonsRadio.module.scss';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import { useDispatch, useSelector } from 'react-redux';
+import { editPostAction, Task } from '../../redux/actions';
 
-interface Props  {
-  children: ReactNode;
+interface Props {
   className?: string;
+  id: number;
 }
 
-const Component:React.FC<Props> = ( { className, children }) => {
+const Component: React.FC<Props> = ({ className, id }) => {
+  const [value, setValue] = React.useState('');
+  const dispatch = useDispatch();
+  let editedPost = useSelector((state: Task[]) => state.filter((post) => post.id === id));
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    dispatch(
+      editPostAction({
+        ...editedPost[0],
+        savedStyle: event.target.value,
+      }),
+    );
+  };
+
   return (
-  <div className={clsx(className, styles.root)}>
-    <h2>ButtonsRadio</h2>
-  {children}
-  </div>
-  )
-}
+    <FormControl component="fieldset" className={clsx(className, styles.root)}>
+      <RadioGroup aria-label="group" name="group" value={value} onChange={handleChange}>
+        <FormControlLabel value="bold" control={<Radio />} label="B" />
+        <FormControlLabel value="italic" control={<Radio />} label="I" />
+        <FormControlLabel value="underline" control={<Radio />} label="U" />
+      </RadioGroup>
+    </FormControl>
+  );
+};
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export { 
-  Component as ButtonsRadio,
-  // Container as ButtonsRadio ,
-  // Component as ButtonsRadioComponent  
- };
+export { Component as ButtonsRadio };
