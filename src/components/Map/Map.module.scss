@@ -1,5 +1,9 @@
 @import '../../../src/styles/settings.scss';
 
-// .root {
-
-// }
+.root {
+  width: 60vw;
+  min-width: 310px;
+  text-align: center;
+  // margin: 5% auto;
+  background-color: #fff;
+}

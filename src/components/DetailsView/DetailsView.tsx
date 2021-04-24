@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { useSelector } from 'react-redux';
 import { Task } from '../../redux/actions';
 import { useParams } from 'react-router-dom';
-
+import { Map } from '../Map/Map';
 interface Props {
   className?: string;
 }
@@ -28,7 +28,8 @@ const Component: React.FC<Props> = ({ className }) => {
         <Button>BACK</Button>
       </CardActions>
       <CardContent>
-        <div>{currentPost[0].content}</div>
+        {/* <div>{currentPost[0].content}</div> */}
+        <Map />
       </CardContent>
     </Card>
   );
