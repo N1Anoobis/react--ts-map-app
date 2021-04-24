@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { Task } from '../../redux/actions';
 import { ButtonsRadio } from '../ButtonsRadio/ButtonsRadio';
 import { useDispatch } from 'react-redux';
-import { removePostAction, editPostAction } from '../../redux/actions';
+import { removePost, editPostAction } from '../../redux/actions';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -79,7 +79,7 @@ const Post: React.FC<Props> = ({ className, data }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary" onClick={() => dispatch(removePostAction(data.id))}>
+          <Button size="small" color="primary" onClick={() => dispatch(removePost(data.id))}>
             Remove
           </Button>
           <Button size="small" color="primary" onClick={() => handleClick(`/post/${data.id}`)}>

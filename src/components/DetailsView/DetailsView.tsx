@@ -5,36 +5,31 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { useSelector } from 'react-redux';
+import { Task } from '../../redux/actions';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   className?: string;
 }
 
-const Component: React.FC<Props> = ({ className }) => {
-  const bull = <span className={styles.bullet}>•</span>;
+interface Params {
+  id: string;
+}
 
+const Component: React.FC<Props> = ({ className }) => {
+  const params: Params = useParams();
+  let currentPost = useSelector((state: Task[]) => state.filter((post) => post.id === Number(params.id)));
+  console.log(currentPost);
+  
   return (
     <Card className={clsx(className, styles.root)}>
-      <CardContent>
-        <Typography className={styles.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography className={styles.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button>BACK</Button>
       </CardActions>
+      <CardContent>
+        <div>{currentPost[0].content}</div>
+      </CardContent>
     </Card>
   );
 }

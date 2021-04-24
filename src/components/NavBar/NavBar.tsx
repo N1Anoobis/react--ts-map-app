@@ -6,6 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import  AddTask  from '../AddTask/AddTask';
+import { fetchPosts } from '../../redux/actions';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   className?: string;
@@ -13,6 +16,12 @@ interface Props {
 
 const Component: React.FC<Props> = ({ className }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+
+useEffect(() => {
+dispatch(fetchPosts());
+}, [])
 
   const handleClick = (destination?: string) => {
     destination ? history.push(`${destination}`) : null;

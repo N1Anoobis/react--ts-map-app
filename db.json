@@ -1,19 +1,16 @@
 {
-    "posts": [{
-            "id": 1,
-            "content": "piwo w bangkoku",
-            "coord": {
-                "lat": -0.843543534534,
-                "lng": 101.34564353453
-            }
-        },
-        {
-            "id": 2,
-            "content": "wypad do rio",
-            "coord": {
-                "lat": -0.843543534534,
-                "lng": 101.34564353453
-            }
-        }
-    ]
+  "posts": [
+    {
+      "id": 1,
+      "content": "piwo w bangkoku",
+      "coord": {
+        "lat": -0.843543534534,
+        "lng": 101.34564353453
+      }
+    },
+    {
+      "id": 518,
+      "content": "wypad do rio"
+    }
+  ]
 }

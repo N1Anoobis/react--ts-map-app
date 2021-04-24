@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import { addPostAction } from '../../redux/actions';
+import { addPost } from '../../redux/actions';
 import styles from './AddTask.module.scss';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -39,7 +39,7 @@ const AddTask: React.FC<Props> = ({ className }) => {
 
   const onAddNoteClick = () => {
     const id = Math.floor(Math.random() * (1000 - 1)) + 1;
-    dispatch(addPostAction(id, content));
+    dispatch(addPost(id, content));
     setContent('');
     setOpen(false);
   };
