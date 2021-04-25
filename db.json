@@ -1,16 +1,20 @@
 {
   "posts": [
     {
-      "id": 1,
-      "content": "piwo w bangkoku",
+      "id": 739,
+      "content": "kkkkkkkkkk",
       "coord": {
-        "lat": -0.843543534534,
-        "lng": 101.34564353453
+        "lat": 23.079731762449775,
+        "lng": -109.82813358306846
       }
     },
     {
-      "id": 518,
-      "content": "wypad do rio"
+      "id": 941,
+      "content": "sssssda",
+      "coord": {
+        "lat": 15.961329081596647,
+        "lng": 100.68749785423277
+      }
     }
   ]
 }

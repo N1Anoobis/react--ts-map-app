@@ -1,79 +1,88 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import styles from './Map.module.scss'
-// import { useEffect } from 'react';
-// import { useState } from 'react';
-// import { useHistory, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Task } from '../../redux/actions';
-import { useParams } from 'react-router-dom';
-import { useLayoutEffect } from 'react';
+import styles from './Map.module.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { Task, addCoord } from '../../redux/actions';
+import { useHistory, useParams } from 'react-router-dom';
+import { useLayoutEffect, useRef } from 'react';
 
 interface Props {
   className?: string;
-  // window?: any;
+  getIntel: Function;
 }
-
-// declare global {
-  interface Window {
-    H: any;
-  }
-// }
 
 interface Params {
   id: string;
 }
 
-const Component: React.FC<Props> = ({ className }) => {
+const Component: React.FC<Props> = ({ className, getIntel }) => {
   // const [isLoading, setIsLoading] = useState(true)
   const params: Params = useParams();
   let thisPost = useSelector((state: Task[]) =>
-    state.filter((post) => post.id === Number(params.id)),
+    state['posts'].filter((post: Task) => post.id === Number(params.id)),
   );
-  // const history = useHistory();
-  // console.log(thisPost)
-  const mapRef = React.useRef(null);
-  // let id: number;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const mapRef = useRef(null);
 
-  // marker: any;
-
-  // center: any;
-
-  // map: any;
-
-  // let plat_form: any;
-  const apikey = 'oJRLarrR9ptiJgKl0DdzVr8A0DdMNyRihnNw2D4PMz4';
-  // You can get the API KEY from developer.here.com
-
-  // @post.Action
-  // public addLocation: (loca: Record<string, unknown>) => void;
-  // @post.Action
-  // public getPost: (id: number) => void;
-  // @post.Getter
-  // post!: Record<string, any>;
-
-  // sendEmit(): void {
-  //   this.$emit("marker", "marked");
-  // const toogleLoading = () => {
-  //   setIsLoading(false)
-  // }
+  const apikey = '2AUqeejhdr0iTZS3Em_1VQ0-I3koV7rMdRrPGroSaL4';
 
   useLayoutEffect(() => {
-    // `mapRef.current` will be `undefined` when this hook first runs; edge case that
     if (!mapRef.current) return;
-    //     setTimeout(() => {
-    //       toogleLoading()
-    //     }, 1000);
+    setTimeout(() => {
+      //       toogleLoading()
+      if (thisPost[0] === undefined) history.push(`/`);
+    }, 200);
     const H = window['H'];
     const platform = new H.service.Platform({
       apikey: apikey,
     });
+
+    const check = () => {
+      if (thisPost[0]) {
+        if (thisPost[0].hasOwnProperty('coord')) {
+          if (thisPost[0].coord !== undefined) {
+            return thisPost[0].coord !== undefined ? thisPost[0].coord : { lat: 50, lng: 5 };
+          }
+        }
+      }
+    };
+
     const defaultLayers = platform.createDefaultLayers();
     const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-      center: { lat: 50, lng: 5 },
+      center: check(),
       zoom: 0,
       pixelRatio: window.devicePixelRatio || 1,
     });
+
+    if (thisPost[0]) {
+      if (thisPost[0].hasOwnProperty('coord')) {
+        if (thisPost[0].coord !== undefined) {
+          hMap.marker = new H.map.Marker({
+            lat: thisPost[0]['coord']['lat'],
+            lng: thisPost[0]['coord']['lng'],
+          });
+          hMap.addObject(hMap.marker);
+        }
+      }
+    }
+    addEventListener('resize', () => hMap.getViewPort().resize());
+    hMap.addEventListener(
+      'tap',
+
+      function (evt: any) {
+        let coord = hMap.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+
+        if (hMap.marker || hMap.marker === undefined) {
+          hMap.removeObjects(hMap.getObjects());
+        }
+        dispatch(addCoord(thisPost[0].id, thisPost[0].content, coord));
+
+        hMap.marker = new H.map.Marker({ lat: coord.lat, lng: coord.lng });
+        hMap.addObject(hMap.marker);
+        getIntel();
+      },
+    );
 
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
@@ -86,73 +95,6 @@ const Component: React.FC<Props> = ({ className }) => {
     };
   }, [mapRef]); // This will run this hook every time this ref is updated
 
-  //   useEffect(() => {
-
-  //     id = Number(params.id);
-  //     // Initialize the platform object:
-  //     if (thisPost) {
-  //       const platform = new window['H'].service.Platform({
-  //         apikey: apikey,
-  //       });
-  //       plat_form = platform;
-  //       // initializeHereMap(id, addLocation, sendEmit);
-  //     initializeHereMap(id)
-  //     } else {
-  //       history.push(`/`);
-  //     }
-  //     }, [])
-
-  //   async const initializeHereMap =(
-  //     id: number,
-
-  //     // addLocation: Function,
-
-  //     // sendEmit: Function
-  // ) => {
-  //   // rendering map
-  //   const mapContainer = this.$refs.hereMap;
-
-  //   const H = await window["H"];
-  //   // Obtain the default map types from the platform object
-  //   var maptypes = await this.platform.createDefaultLayers();
-
-  //   // Instantiate (and display) a map object:
-  //   this.map = await new H.Map(mapContainer, maptypes.vector.normal.map, {
-  //     zoom: 0,
-  //     center: this.post.coord ? this.post.coord : this.center,
-  //   });
-
-  //   if (this.post.coord) {
-  //     this.marker = new H.map.Marker({
-  //       lat: this.post.coord.lat,
-  //       lng: this.post.coord.lng,
-  //     });
-  //     this.map.addObject(this.marker);
-  //   }
-  //   await addEventListener("resize", () => this.map.getViewPort().resize());
-  //   this.map.addEventListener(
-  //     "tap",
-
-  //     function (evt: any) {
-  //       var coord = this.screenToGeo(
-  //         evt.currentPointer.viewportX,
-  //         evt.currentPointer.viewportY
-  //       );
-  //       if (this.marker || this.marker === undefined) {
-  //         this.removeObjects(this.getObjects());
-  //       }
-  //       addLocation({ coord, id });
-  //       this.marker = new H.map.Marker({ lat: coord.lat, lng: coord.lng });
-  //       this.addObject(this.marker);
-  //       sendEmit();
-  //     },
-  //     // add behavior control
-  //     new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map))
-  //   );
-  //   // add UI
-  //   H.ui.UI.createDefault(this.map, maptypes);
-  // }
-
   return (
     <div id="map" className={clsx(className, styles.root)}>
       <div className="map" ref={mapRef} style={{ height: '500px' }}>
@@ -160,9 +102,6 @@ const Component: React.FC<Props> = ({ className }) => {
       </div>
     </div>
   );
-}
-
-export { 
-  Component as Map,  
 };
-  
+
+export { Component as Map };

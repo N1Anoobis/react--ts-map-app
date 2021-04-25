@@ -13,7 +13,7 @@ const Component: React.FC<Props> = ({ className }) => {
   const posts = useSelector((state) => state);
   let items: Array<any>;
   const getItems = () => {
-    items = Object.values(posts);
+    items = Object.values(posts['posts']);
     return items;
   };
 

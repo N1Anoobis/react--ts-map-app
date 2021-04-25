@@ -4,11 +4,13 @@ import styles from './DetailsView.module.scss';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import { useSelector } from 'react-redux';
-import { Task } from '../../redux/actions';
-import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Task, fetchIntel } from '../../redux/actions';
+import { useHistory, useParams } from 'react-router-dom';
 import { Map } from '../Map/Map';
+import { useState, useEffect } from 'react';
+import { Button } from '@material-ui/core';
+
 interface Props {
   className?: string;
 }
@@ -19,20 +21,91 @@ interface Params {
 
 const Component: React.FC<Props> = ({ className }) => {
   const params: Params = useParams();
-  let currentPost = useSelector((state: Task[]) => state.filter((post) => post.id === Number(params.id)));
-  console.log(currentPost);
-  
+  const currentPost = useSelector((state: Task[]) =>
+    state['posts'].filter((post: Task) => post.id === Number(params.id)),
+  );
+  const history = useHistory();
+  const [distance, setDistance] = useState('');
+  const [country, setCountry] = useState('');
+  const [marker, setMarker] = useState(0);
+  const dispatch = useDispatch();
+
+  const crg = require('country-reverse-geocoding').country_reverse_geocoding();
+
+  const getIntel = () => {
+    setMarker(marker+1)
+  };
+
+  const handleClick = (destination: string) => {
+    history.push(`${destination}`);
+  };
+
+  useEffect(() => {
+    if (currentPost) {
+      geo();
+      getCurrentLocation(currentPost);
+    }
+  }, [marker]);
+
+  const geo = (): void => {
+    if (currentPost[0]) {
+      if (currentPost[0].hasOwnProperty('coord')) {
+        if (currentPost[0].coord !== undefined) {
+          if ('coord' in currentPost[0]) {
+            const country = crg.get_country(
+              currentPost[0].coord['lat'],
+              currentPost[0].coord['lng'],
+            ).name;
+            setCountry(country);
+          }
+        }
+      }
+    }
+  };
+
+  const getCurrentLocation = (post: Task): void => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        if (currentPost[0]) {
+          if (currentPost[0].hasOwnProperty('coord')) {
+            if (currentPost[0].coord !== undefined) {
+              if ('coord' in post[0]) {
+                var radlat1 = (Math.PI * position.coords.latitude) / 180;
+                var radlat2 = (Math.PI * post[0].coord['lat']) / 180;
+                var theta = position.coords.longitude - post[0].coord['lng'];
+                var radtheta = (Math.PI * theta) / 180;
+                var dist =
+                  Math.sin(radlat1) * Math.sin(radlat2) +
+                  Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                dist = Math.acos(dist);
+                dist = (dist * 180) / Math.PI;
+                dist = dist * 60 * 1.1515;
+                dist = dist * 1.609344;
+                dist = Math.floor(dist);
+                setDistance(String(dist));
+              }
+            }
+          }
+        }
+      });
+    }
+  };
+
   return (
     <Card className={clsx(className, styles.root)}>
       <CardActions>
-        <Button>BACK</Button>
+        {country && (
+          <Button className={styles.btn} onClick={() => handleClick(`/post/${params.id}/${country}/`)}>
+            INTEL
+          </Button>
+        )}
       </CardActions>
+      <div>{distance && <div className={styles.dist}>{distance} km</div>}</div>
       <CardContent>
-        {/* <div>{currentPost[0].content}</div> */}
-        <Map />
+        <Map getIntel={getIntel} />
       </CardContent>
     </Card>
   );
-}
+};
 
 export { Component as DetailsView };

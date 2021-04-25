@@ -32,7 +32,7 @@ function App() {
             {/* <Route exact path='/' component={Homepage} /> */}
             <Route exact path="/" component={PostCard} />
             <Route exact path="/post/:id" component={DetailsView} />
-            <Route exact path="/post/:id/intel" component={Intel} />
+            <Route exact path="/post/:id/:country" component={Intel} />
             <Route path="/currencies" component={Currencies} />
           </Switch>
         </MainLayout>

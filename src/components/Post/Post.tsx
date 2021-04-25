@@ -51,9 +51,9 @@ const Post: React.FC<Props> = ({ className, data }) => {
         <CardActionArea>
           <CardMedia image="/static/images/cards/contemplative-reptile.jpg" />
           <CardContent spellCheck="false">
-            <Typography gutterBottom variant="h5" component="h2" className={styles.id}>
+            <h5 className={styles.id}>
               {data.id}
-            </Typography>
+            </h5>
             <div className={styles.radios}>
               <ButtonsRadio id={data.id} />
               <Typography

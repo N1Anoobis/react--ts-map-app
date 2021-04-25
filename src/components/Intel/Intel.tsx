@@ -1,36 +1,75 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import styles from './Intel.module.scss'
+import styles from './Intel.module.scss';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchIntel, resetIntelAction } from '../../redux/actions';
+import { useEffect } from 'react';
 
-interface Props  {
-  children: ReactNode;
+interface Props {
   className?: string;
 }
 
-const Component:React.FC<Props> = ( { className, children }) => {
-  return (
-  <div className={clsx(className, styles.root)}>
-    <h2>Intel</h2>
-  {children}
-  </div>
-  )
+interface Params {
+  id: string;
 }
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const Component: React.FC<Props> = ({ className }) => {
+  const intel = useSelector((state) => state['intel']);
+  const dispatch = useDispatch();
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+    console.log(intel);
+  useEffect(() => {
+    return () => {
+      dispatch(resetIntelAction());
+    };
+  }, [intel]);
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+  return (
+    <Card className={clsx(className, styles.root)}>
+      {/* {intel && (
+        <CardActionArea>
+          <CardMedia
+            // className={classes.media}
+            image={intel.flag}
+          />
 
-export { 
-  Component as Intel,
-  // Container as Intel ,
-  // Component as IntelComponent  
- };
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {intel.subregion}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {intel.name}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              {intel.currencies[0].name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {intel.capital}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              {intel.languages[0].name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {intel.nativeName}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      )} */}
+      <CardActions>
+        <Button size="small" color="primary">
+          Learn More
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
+export { Component as Intel };

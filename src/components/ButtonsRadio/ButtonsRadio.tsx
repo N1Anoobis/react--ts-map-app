@@ -16,7 +16,7 @@ interface Props {
 const Component: React.FC<Props> = ({ className, id }) => {
   const [value, setValue] = React.useState('');
   const dispatch = useDispatch();
-  let editedPost = useSelector((state: Task[]) => state.filter((post) => post.id === id));
+  let editedPost = useSelector((state: Task[]) => state['posts'].filter((post: Task) => post.id === id));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
