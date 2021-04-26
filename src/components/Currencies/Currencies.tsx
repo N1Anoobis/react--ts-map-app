@@ -27,7 +27,6 @@ const Component: React.FC<Props> = ({ className }) => {
   }, []);
 
   const checkRates = (code: string) => {
-    console.log(code);
     history.push(`/currencies/${code}/rates`);
   };
 

@@ -15,6 +15,7 @@ export enum IntelActions {
 
 export enum CurrenciesActions {
   IMPORT_CURRENCIES = 'Import currencies',
+  FETCH_COIN = 'Fetch coin',
 }
 
 export interface Intel {
@@ -40,7 +41,7 @@ export interface Coord {
 
 export interface Currencies {
   code: string;
-  currency: string;
+  currency?: string;
   mid: number;
 }
 
@@ -78,12 +79,17 @@ interface ResetIntel {
 /*Currencies*/
 interface ImportCurrencies {
   type: CurrenciesActions.IMPORT_CURRENCIES;
-  payload: any[];
+  payload: Currencies[];
+}
+
+interface FetchCoin {
+  type: CurrenciesActions.FETCH_COIN;
+  payload: Currencies[];
 }
 
 export type PostActionsTypes = AddPost | RemovePost | EditPost | ImportPosts;
 export type IntelActionsTypes = ImportIntel | ResetIntel;
-export type CurrenciesActionsTypes = ImportCurrencies;
+export type CurrenciesActionsTypes = ImportCurrencies | FetchCoin;
 
 /*Post*/
 export const addPostAction = (id: number, content: string): PostActionsTypes => ({
@@ -120,6 +126,11 @@ export const resetIntelAction = (): IntelActionsTypes => ({
 export const importedCurrenciesAction = (currencies: Currencies[]): CurrenciesActionsTypes => ({
   type: CurrenciesActions.IMPORT_CURRENCIES,
   payload: currencies,
+});
+
+export const fetchSingleCoinAction = (coin: Currencies[]): CurrenciesActionsTypes => ({
+  type: CurrenciesActions.FETCH_COIN,
+  payload: coin,
 });
 
 
@@ -171,7 +182,6 @@ export const fetchIntel = (code: string) => {
   return (dispatch: (arg0: IntelActionsTypes) => void, state: Intel[]) => {
     Axios.get(`https://restcountries.eu/rest/v2/name/${code}`)
       .then((res) => {
-        console.log(res.data)
         dispatch(importedIntelAction(res.data));
       })
       .catch((error) => {
@@ -192,3 +202,17 @@ export const fetchCurrencies = () => {
       });
   };
 };
+
+export const fetchSingleCoin =(code: string)=> {
+  return (dispatch: (arg0: CurrenciesActionsTypes) => void, state: Currencies[]) => {
+    Axios.get(
+      `http://api.nbp.pl/api/exchangerates/rates/a/${code}/last/20/?format=json`,
+    )
+      .then((res) => {
+        dispatch(fetchSingleCoinAction(res.data.rates));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+}

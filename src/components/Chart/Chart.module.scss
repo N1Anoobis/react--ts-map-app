@@ -1,5 +1,10 @@
 @import '../../../src/styles/settings.scss';
 
-// .root {
-
-// }
+.root {
+  .code {
+    text-align: center;
+  }
+  .avg {
+      color: orange;
+  }
+}

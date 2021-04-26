@@ -7,8 +7,8 @@ export const currenciesReducer = (
   switch (action.type) {
     case CurrenciesActions.IMPORT_CURRENCIES:
       return action.payload;
-    // case CurrenciesActions.RESET_INTEL:
-    //   return (state = []);
+    case CurrenciesActions.FETCH_COIN:
+      return action.payload;
     default:
       return state;
       break;
