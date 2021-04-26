@@ -18,9 +18,8 @@ const Component: React.FC<Props> = ({ className }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-
 useEffect(() => {
-dispatch(fetchPosts());
+  dispatch(fetchPosts());
 }, [])
 
   const handleClick = (destination?: string) => {

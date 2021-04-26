@@ -21,7 +21,7 @@ interface Params {
 
 const Component: React.FC<Props> = ({ className }) => {
   const params: Params = useParams();
-  const currentPost = useSelector((state: Task[]) =>
+  let currentPost = useSelector((state: Task[]) =>
     state['posts'].filter((post: Task) => post.id === Number(params.id)),
   );
   const history = useHistory();
@@ -29,7 +29,8 @@ const Component: React.FC<Props> = ({ className }) => {
   const [country, setCountry] = useState('');
   const [marker, setMarker] = useState(0);
   const dispatch = useDispatch();
-
+  const [state, setState] = useState(currentPost[0] || []);
+  
   const crg = require('country-reverse-geocoding').country_reverse_geocoding();
 
   const getIntel = () => {
@@ -41,10 +42,14 @@ const Component: React.FC<Props> = ({ className }) => {
   };
 
   useEffect(() => {
+       window.onbeforeunload = function () {
+         return true;
+       };
     if (currentPost) {
       geo();
       getCurrentLocation(currentPost);
     }
+        return () => currentPost[0] = state
   }, [marker]);
 
   const geo = (): void => {
@@ -57,6 +62,8 @@ const Component: React.FC<Props> = ({ className }) => {
               currentPost[0].coord['lng'],
             ).name;
             setCountry(country);
+            dispatch(fetchIntel(country));
+            setState(currentPost[0]);
           }
         }
       }
@@ -100,7 +107,7 @@ const Component: React.FC<Props> = ({ className }) => {
           </Button>
         )}
       </CardActions>
-      <div>{distance && <div className={styles.dist}>{distance} km</div>}</div>
+      <div>{distance && <div className={styles.dist}>distance: {distance} km</div>}</div>
       <CardContent>
         <Map getIntel={getIntel} />
       </CardContent>

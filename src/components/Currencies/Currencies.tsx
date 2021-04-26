@@ -1,36 +1,67 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import styles from './Currencies.module.scss'
+import styles from './Currencies.module.scss';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Currencies, fetchCurrencies } from '../../redux/actions';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { useHistory } from 'react-router-dom';
 
-interface Props  {
-  children: ReactNode;
+interface Props {
   className?: string;
 }
 
-const Component:React.FC<Props> = ( { className, children }) => {
+const Component: React.FC<Props> = ({ className }) => {
+  const history = useHistory();
+  const currencies = useSelector((state) => state['currencies']);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCurrencies());
+  }, []);
+
+  const checkRates = (code: string) => {
+    console.log(code);
+    history.push(`/currencies/${code}/rates`);
+  };
+
   return (
-  <div className={clsx(className, styles.root)}>
-    <h2>Currencies</h2>
-  {children}
-  </div>
-  )
-}
+    <TableContainer component={Paper} className={clsx(className, styles.root)}>
+      <Table aria-label="simple table" className={styles.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Currency</TableCell>
+            <TableCell align="right">Code</TableCell>
+            <TableCell align="right">Rate</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currencies &&
+            currencies.map((row: Currencies) => (
+              <TableRow key={row.code}>
+                <TableCell component="th" scope="row">
+                  {row.currency}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  className={styles.code}
+                  onClick={() => checkRates(row.code)}
+                >
+                  {row.code}
+                </TableCell>
+                <TableCell align="right">{row.mid}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export { 
-  Component as Currencies,
-  // Container as Currencies ,
-  // Component as CurrenciesComponent  
- };
+export { Component as Currencies };

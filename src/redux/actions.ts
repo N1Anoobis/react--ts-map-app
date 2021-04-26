@@ -13,6 +13,10 @@ export enum IntelActions {
   RESET_INTEL = 'Remove intel',
 }
 
+export enum CurrenciesActions {
+  IMPORT_CURRENCIES = 'Import currencies',
+}
+
 export interface Intel {
   id?: number;
   flag?: string;
@@ -34,6 +38,13 @@ export interface Coord {
   lng: number;
 }
 
+export interface Currencies {
+  code: string;
+  currency: string;
+  mid: number;
+}
+
+/*Post*/
 interface AddPost {
   type: PostActions.ADD_POST;
   payload: Task;
@@ -54,6 +65,7 @@ interface ImportPosts {
   payload: Task[];
 }
 
+/*Intel*/
 interface ImportIntel {
   type: IntelActions.IMPORT_INTEL;
   payload: Record<string, unknown>[];
@@ -63,9 +75,17 @@ interface ResetIntel {
   type: IntelActions.RESET_INTEL;
 }
 
+/*Currencies*/
+interface ImportCurrencies {
+  type: CurrenciesActions.IMPORT_CURRENCIES;
+  payload: any[];
+}
+
 export type PostActionsTypes = AddPost | RemovePost | EditPost | ImportPosts;
 export type IntelActionsTypes = ImportIntel | ResetIntel;
+export type CurrenciesActionsTypes = ImportCurrencies;
 
+/*Post*/
 export const addPostAction = (id: number, content: string): PostActionsTypes => ({
   type: PostActions.ADD_POST,
   payload: { id, content },
@@ -86,6 +106,7 @@ export const importedPostsAction = (posts: Task[]): PostActionsTypes => ({
   payload: posts,
 });
 
+/*Intel*/
 export const importedIntelAction = (intel: Record<string, unknown>): IntelActionsTypes => ({
   type: IntelActions.IMPORT_INTEL,
   payload: [ intel ],
@@ -95,7 +116,16 @@ export const resetIntelAction = (): IntelActionsTypes => ({
   type: IntelActions.RESET_INTEL,
 });
 
+/*Currencies*/
+export const importedCurrenciesAction = (currencies: Currencies[]): CurrenciesActionsTypes => ({
+  type: CurrenciesActions.IMPORT_CURRENCIES,
+  payload: currencies,
+});
+
+
 /* thunk creators */
+
+/*Post*/
 export const fetchPosts = () => {
   return (dispatch: (arg0: PostActionsTypes) => void, state: Task[]) => {
     Axios.get(`http://localhost:3000/posts`)
@@ -136,6 +166,7 @@ export const addCoord = (id: number, content: string, coord: Coord) => {
   };
 };
 
+/*Intel*/
 export const fetchIntel = (code: string) => {
   return (dispatch: (arg0: IntelActionsTypes) => void, state: Intel[]) => {
     Axios.get(`https://restcountries.eu/rest/v2/name/${code}`)
@@ -145,6 +176,19 @@ export const fetchIntel = (code: string) => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+};
+
+/*Currencies*/
+export const fetchCurrencies = () => {
+  return (dispatch: (arg0: CurrenciesActionsTypes) => void, state: Currencies[]) => {
+    Axios.get("http://api.nbp.pl/api/exchangerates/tables/a/")
+      .then(res => {
+        dispatch(importedCurrenciesAction(res.data[0].rates));
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 };

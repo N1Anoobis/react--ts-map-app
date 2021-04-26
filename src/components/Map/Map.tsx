@@ -4,7 +4,7 @@ import styles from './Map.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { Task, addCoord } from '../../redux/actions';
 import { useHistory, useParams } from 'react-router-dom';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
   className?: string;
@@ -16,7 +16,6 @@ interface Params {
 }
 
 const Component: React.FC<Props> = ({ className, getIntel }) => {
-  // const [isLoading, setIsLoading] = useState(true)
   const params: Params = useParams();
   let thisPost = useSelector((state: Task[]) =>
     state['posts'].filter((post: Task) => post.id === Number(params.id)),
@@ -24,15 +23,14 @@ const Component: React.FC<Props> = ({ className, getIntel }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const mapRef = useRef(null);
-
+  const [state, setState] = useState(thisPost || {});
+  
   const apikey = '2AUqeejhdr0iTZS3Em_1VQ0-I3koV7rMdRrPGroSaL4';
 
   useLayoutEffect(() => {
+    setState(thisPost);
     if (!mapRef.current) return;
-    setTimeout(() => {
-      //       toogleLoading()
-      if (thisPost[0] === undefined) history.push(`/`);
-    }, 200);
+
     const H = window['H'];
     const platform = new H.service.Platform({
       apikey: apikey,
@@ -91,6 +89,7 @@ const Component: React.FC<Props> = ({ className, getIntel }) => {
     // This will act as a cleanup to run once this hook runs again.
     // This includes when the component un-mounts
     return () => {
+      () => (thisPost= state);
       hMap.dispose();
     };
   }, [mapRef]); // This will run this hook every time this ref is updated
