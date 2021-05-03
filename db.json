@@ -1,16 +1,12 @@
 {
   "posts": [
     {
-      "id": 470,
-      "content": "new year in pattaya",
+      "id": 909,
+      "content": "piwo w pattaya",
       "coord": {
-        "lat": 14.017849751304201,
-        "lng": 101.31185747279487
+        "lat": 13.354861222794439,
+        "lng": 100.97467484862425
       }
-    },
-    {
-      "id": 286,
-      "content": "ghghghghg"
     }
   ]
 }

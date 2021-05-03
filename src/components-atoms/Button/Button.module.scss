@@ -8,14 +8,19 @@
   border: 1px solid black;
   border-radius: 20px;
   padding: 5px 10px;
+  transition: 1s;
   &:hover {
     border: 1px solid transparent;
-    color: orange;
+    color: black;
     transition: 0.3s;
-    background-color: black;
+    text-decoration: underline;
   }
 }
 .nav {
   color: white;
   border: 1px solid white;
+  &:hover {
+    color: white;
+    border: 1px solid transparent;
+  }
 }

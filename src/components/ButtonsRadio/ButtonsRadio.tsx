@@ -1,12 +1,10 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import styles from './ButtonsRadio.module.scss';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import { useDispatch, useSelector } from 'react-redux';
 import { editPostAction, Task } from '../../redux/actions';
+import { RadioGroup } from '../../components-atoms/RadioGroup/RadioGroup';
+import { Radio } from '../../components-atoms/Radio/Radio';
 
 interface Props {
   className?: string;
@@ -16,9 +14,11 @@ interface Props {
 const Component: React.FC<Props> = ({ className, id }) => {
   const [value, setValue] = React.useState('');
   const dispatch = useDispatch();
-  let editedPost = useSelector((state: Task[]) => state['posts'].filter((post: Task) => post.id === id));
+  let editedPost = useSelector((state: Task[]) =>
+    state['posts'].filter((post: Task) => post.id === id),
+  );
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: any) => {
     setValue(event.target.value);
     dispatch(
       editPostAction({
@@ -29,13 +29,13 @@ const Component: React.FC<Props> = ({ className, id }) => {
   };
 
   return (
-    <FormControl component="fieldset" className={clsx(className, styles.root)}>
-      <RadioGroup aria-label="group" name="group" value={value} onChange={handleChange}>
-        <FormControlLabel value="bold" control={<Radio />} label="B" />
-        <FormControlLabel value="italic" control={<Radio />} label="I" />
-        <FormControlLabel value="underline" control={<Radio />} label="U" />
+    <div className={clsx(className, styles.root)} >
+      <RadioGroup onChange={(event) => handleChange(event)}>
+        <Radio text="B" value="bold" name="styles" />
+        <Radio text="I" value="italic" name="styles" />
+        <Radio text="U" value="underline" name="styles" />
       </RadioGroup>
-    </FormControl>
+    </div>
   );
 };
 
