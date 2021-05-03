@@ -9,7 +9,7 @@ import { Task, fetchIntel } from '../../redux/actions';
 import { useHistory, useParams } from 'react-router-dom';
 import { Map } from '../Map/Map';
 import { useState, useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '../../components-atoms/Button/Button';
 
 interface Props {
   className?: string;
@@ -102,9 +102,7 @@ const Component: React.FC<Props> = ({ className }) => {
     <Card className={clsx(className, styles.root)}>
       <CardActions>
         {country && (
-          <Button className={styles.btn} onClick={() => handleClick(`/post/${params.id}/${country}/`)}>
-            INTEL
-          </Button>
+          <Button text="INTEL" onClick={() => handleClick(`/post/${params.id}/${country}/`)} />
         )}
       </CardActions>
       <div>{distance && <div className={styles.dist}>distance: {distance} km</div>}</div>

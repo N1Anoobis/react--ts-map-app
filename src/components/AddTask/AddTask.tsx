@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../../redux/actions';
 import styles from './AddTask.module.scss';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button } from '../../components-atoms/Button/Button';
 
 interface Props {
   className?: string;
@@ -46,9 +46,7 @@ const AddTask: React.FC<Props> = ({ className }) => {
 
   return (
     <div className={clsx(className, styles.root)}>
-      <Button className={styles.btn} variant="outlined" color="primary" onClick={handleClickOpen}>
-        AddTask
-      </Button>
+      <Button text="AddTask" mode="nav" onClick={handleClickOpen} />
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Where to ?</DialogTitle>
         <DialogContent>
@@ -67,12 +65,8 @@ const AddTask: React.FC<Props> = ({ className }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={onAddNoteClick} color="primary">
-            Add
-          </Button>
+          <Button onClick={handleClose} text="Cancel" />
+          <Button onClick={onAddNoteClick} text="Add" />
         </DialogActions>
       </Dialog>
     </div>

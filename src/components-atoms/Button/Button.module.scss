@@ -1,0 +1,21 @@
+@import '../../../src/styles/settings.scss';
+
+.root {
+  background-color: transparent;
+  margin: 0 auto;
+  text-decoration: none;
+  color: black;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 5px 10px;
+  &:hover {
+    border: 1px solid transparent;
+    color: orange;
+    transition: 0.3s;
+    background-color: black;
+  }
+}
+.nav {
+  color: white;
+  border: 1px solid white;
+}

@@ -6,7 +6,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Task } from '../../redux/actions';
 import { ButtonsRadio } from '../ButtonsRadio/ButtonsRadio';
@@ -14,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { removePost, editPostAction } from '../../redux/actions';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button } from '../../components-atoms/Button/Button';
 
 interface Props {
   className?: string;
@@ -51,9 +51,7 @@ const Post: React.FC<Props> = ({ className, data }) => {
         <CardActionArea>
           <CardMedia image="/static/images/cards/contemplative-reptile.jpg" />
           <CardContent spellCheck="false">
-            <h5 className={styles.id}>
-              {data.id}
-            </h5>
+            <h5 className={styles.id}>{data.id}</h5>
             <div className={styles.radios}>
               <ButtonsRadio id={data.id} />
               <Typography
@@ -79,12 +77,8 @@ const Post: React.FC<Props> = ({ className, data }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary" onClick={() => dispatch(removePost(data.id))}>
-            Remove
-          </Button>
-          <Button size="small" color="primary" onClick={() => handleClick(`/post/${data.id}`)}>
-            Details
-          </Button>
+          <Button text="Remove" onClick={() => dispatch(removePost(data.id))} />
+          <Button text="Details" onClick={() => handleClick(`/post/${data.id}`)} />
         </CardActions>
       </Card>
     </div>

@@ -5,13 +5,13 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchIntel, resetIntelAction } from '../../redux/actions';
 import { useEffect, useState } from 'react';
 import { Paper } from '@material-ui/core';
+import { Button } from '../../components-atoms/Button/Button';
 
 interface Props {
   className?: string;
@@ -67,14 +67,11 @@ const Component: React.FC<Props> = ({ className }) => {
       )}
       <CardActions>
         <Button
-          size="small"
-          color="primary"
+          text="wikipedia"
           onClick={() =>
             window.open(`https://en.wikipedia.org/wiki/${params['country']}`, '_blank')
           }
-        >
-          wikipedia
-        </Button>
+        />
       </CardActions>
     </Card>
   );
