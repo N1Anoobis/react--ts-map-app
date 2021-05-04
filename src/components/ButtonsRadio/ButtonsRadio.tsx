@@ -23,6 +23,7 @@ const Component: React.FC<Props> = ({ className, id }) => {
   const [underline, setUnderline] = useState(false);
 
   const handleChange = (event: any) => {
+    console.log(editedPost[0].id)
     setValue(event.target.value);
     setRadioButtons(event.target.value);
     dispatch(
@@ -55,9 +56,9 @@ const Component: React.FC<Props> = ({ className, id }) => {
   return (
     <div className={clsx(className, styles.root)}>
       <RadioGroup onChange={(event) => handleChange(event)}>
-        <Radio text="B" value="bold" name="styles" checked={bold} onChange={()=>{}}/>
-        <Radio text="I" value="italic" name="styles" checked={italic} onChange={()=>{}}/>
-        <Radio text="U" value="underline" name="styles" checked={underline} onChange={()=>{}}/>
+        <Radio text="B" value="bold" checked={bold} onChange={()=>{}}/>
+        <Radio text="I" value="italic" checked={italic} onChange={()=>{}}/>
+        <Radio text="U" value="underline" checked={underline} onChange={()=>{}}/>
       </RadioGroup>
     </div>
   );

@@ -6,12 +6,11 @@ interface Props {
   className?: string;
   text: string;
   value: string;
-  name: string;
   checked?: boolean;
   onChange?: ()=> void;
 }
 
-const Component: React.FC<Props> = ({ className, text, value, name, checked, onChange }) => {
+const Component: React.FC<Props> = ({ className, text, value, checked, onChange }) => {
   return (
     <div className={clsx(className, styles.root)}>
       <div className={styles.container}>
@@ -19,7 +18,6 @@ const Component: React.FC<Props> = ({ className, text, value, name, checked, onC
           type="radio"
           className={styles.checkmark}
           value={value}
-          name={name}
           checked={checked}
           onChange={onChange}
         />
