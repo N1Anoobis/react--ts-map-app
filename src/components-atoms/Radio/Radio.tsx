@@ -7,9 +7,11 @@ interface Props {
   text: string;
   value: string;
   name: string;
+  checked?: boolean;
+  onChange?: ()=> void;
 }
 
-const Component: React.FC<Props> = ({ className, text, value, name }) => {
+const Component: React.FC<Props> = ({ className, text, value, name, checked, onChange }) => {
   return (
     <div className={clsx(className, styles.root)}>
       <div className={styles.container}>
@@ -18,6 +20,8 @@ const Component: React.FC<Props> = ({ className, text, value, name }) => {
           className={styles.checkmark}
           value={value}
           name={name}
+          checked={checked}
+          onChange={onChange}
         />
         <p>{text}</p>
       </div>
