@@ -22,8 +22,13 @@ const Component: React.FC<Props> = ({ className, id }) => {
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
 
+  useEffect(() => {
+    if (editedPost[0].savedStyle) {
+      setRadioButtons(editedPost[0].savedStyle);
+    }
+  }, []);
+
   const handleChange = (event: any) => {
-    console.log(editedPost[0].id)
     setValue(event.target.value);
     setRadioButtons(event.target.value);
     dispatch(
@@ -46,12 +51,6 @@ const Component: React.FC<Props> = ({ className, id }) => {
       setUnderline(true);
     }
   };
-
-  useEffect(() => {
-    if (editedPost[0].savedStyle) {
-      setRadioButtons(editedPost[0].savedStyle);
-    }
-  }, []);
 
   return (
     <div className={clsx(className, styles.root)}>

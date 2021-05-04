@@ -43,7 +43,7 @@ const Component: React.FC<Props> = ({ className }) => {
         <TableBody>
           {currencies &&
             currencies.map((row: Currencies) => (
-              <TableRow key={row.code}>
+              <TableRow key={row.mid}>
                 <TableCell component="th" scope="row">
                   {row.currency}
                 </TableCell>

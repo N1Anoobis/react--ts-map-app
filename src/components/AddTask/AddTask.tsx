@@ -10,6 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '../../components-atoms/Button/Button';
+import { Input } from '../../components-atoms/Input/Input';
 
 interface Props {
   className?: string;
@@ -53,15 +54,11 @@ const AddTask: React.FC<Props> = ({ className }) => {
           <DialogContentText>
             A journey of a thousand miles begins with a single step
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="enter your idea"
-            type="text"
-            fullWidth
+          <Input
             onChange={updateNote}
             value={content}
+            label="Enter your idea"
+            placeholder="Enter your idea"
           />
         </DialogContent>
         <DialogActions>
@@ -74,4 +71,3 @@ const AddTask: React.FC<Props> = ({ className }) => {
 };
 
 export default AddTask;
-
